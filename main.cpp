@@ -45,68 +45,32 @@ void draw_mandelbrot(float x_center, float y_center, sf::RenderWindow& window)
     sf::Image image;
     image.create(800,600, sf::Color::Blue);
 
+    //win.clear(sf::Color::Black);
+
     for (int col = 0; col < WIDTH; col++)
     {
-        for (int row = 0; row < HEIGHT; row += 8)
+            for (int row = 0; row < HEIGHT; row++)
         {
-            float array_x0 [8] = {0};
-            for (int i = 0; i < 8; i++)
-            {
-                array_x0 [i] = (float)(row + i)/250 - 2.2 + x_center;
-            }
-
-            float array_y0 [8] = {0};
-            for (int i = 0; i < 8; i++)
-            {
-                array_y0 [i] = (float)(col)/250 - 1.2 + x_center;
-            }
+            x0 = (float)(row)/250 - 2.2 + x_center;
+            y0 = (float)(col)/250 - 1.2 + y_center;
         
-            float array_x [8] = {0};
-            float array_y [8] = {0};
-            int array_step [8] = {0};
+            float x = 0;
+            float y = 0;
+            size_t step = 0;
 
-            int cmp [8] = {0};
-            for (int i = 0; i < 8; i++)
+            for (; step < MAX_STEP; step++)
             {
-                cmp[i] = 1;
+                float x2 = x * x;
+                float y2 = y * y;
+                float xy = x * y;
+                float dist2 = x2 + y2;
+                if (dist2 > MAX_DIST)   break;
+
+                x = x2 - y2 + x0;
+                y = xy + xy + y0;
             }
-
-            for (size_t step_cnt = 0; step_cnt < MAX_STEP; step_cnt++)
-            {
-                float x2[8] = {0};
-                float y2[8] = {0};
-                float xy[8] = {0};
-                float dist2[8] = {0};
-
-                for (int i = 0; i < 8; i++)
-                {
-                    x2[i] = array_x[i] * array_x[i];
-                    y2[i] = array_y[i] * array_y[i];
-                    xy[i] = array_x[i] * array_y[i];
-                    dist2[i] = x2[i] + y2[i];
-                }
-
-                for (size_t el = 0; el < 8; el++)
-                    if (dist2[el] > MAX_DIST)                   
-                        cmp[el] = 0;
-                    
-                int mask = 0;
-                for (size_t el = 0; el < 8; el++)         
-                    mask += cmp[el];
-
-                if (!mask)                                      
-                    break;
             
-                for (size_t el = 0; el < 8; el++)
-                {
-                    array_x[el] = x2[el] - y2[el] + array_x0[el];
-                    array_y[el] = xy[el] + xy[el] + array_y0[el];
-                    array_step[el] = array_step[el] + cmp[el];
-                }
-            }
-
-            for (int a = 0; a < 8; a++)
-                image.setPixel (row + a, col, sf::Color(array_step[a], 100, 100, 100));
+            image.setPixel (row, col, sf::Color(step, 100, 100, 100));
         }
     }
     sf::Texture herotexture;
