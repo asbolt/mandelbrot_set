@@ -62,18 +62,19 @@ int main (int argc, char *argv[])
 
 
         int opt_type = atoi (argv[1]);
+        previous_time = clock.getElapsedTime();
         switch (opt_type)
         {
         case NO_OPT:
-            draw_mandelbrot (scale, x_center, y_center, win);
+            draw_mandelbrot (scale, x_center, y_center, &win);
             break;
 
         case ARRAYS:
-            draw_mandelbrot_arrays (scale, x_center, y_center, win);
+            draw_mandelbrot_arrays (scale, x_center, y_center, &win);
             break;
 
         case SIMD:
-            draw_mandelbrot_SIMD (scale, x_center, y_center, win);
+            draw_mandelbrot_SIMD (scale, x_center, y_center, &win);
             break;
         
         default:
@@ -81,7 +82,7 @@ int main (int argc, char *argv[])
             break;
         }
 
-        print_fps (clock, current_time, previous_time, win);
+        print_fps (&clock, &current_time, &previous_time, &win);
         win.display();
     }
 

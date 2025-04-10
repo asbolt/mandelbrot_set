@@ -7,6 +7,6 @@
 
 const size_t FPS_STR_LEN = 4;
 
-void print_fps (sf::Clock& clock, sf::Time& current_time, sf::Time& previous_time, sf::RenderWindow& win);
+void print_fps (sf::Clock* clock, sf::Time* current_time, sf::Time* previous_time, sf::RenderWindow* win);
 
 #endif

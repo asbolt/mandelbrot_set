@@ -1,6 +1,6 @@
 #include "mandelbrot.h"
 
-void draw_mandelbrot (float scale, float x_center, float y_center, sf::RenderWindow& window)
+void draw_mandelbrot (float scale, float x_center, float y_center, sf::RenderWindow* window)
 {
     float x0 = 0;
     float y0 = 0;
@@ -44,12 +44,12 @@ void draw_mandelbrot (float scale, float x_center, float y_center, sf::RenderWin
 	sprite.setTexture (texture);
 	sprite.setPosition (0, 0);
 
-    window.clear();
-	window.draw (sprite);
-	window.display();
+    window->clear();
+	window->draw (sprite);
+	window->display();
 }
 
-void draw_mandelbrot_arrays (float scale, float x_center, float y_center, sf::RenderWindow& window)
+void draw_mandelbrot_arrays (float scale, float x_center, float y_center, sf::RenderWindow* window)
 {
     float x0 = 0;
     float y0 = 0;
@@ -132,12 +132,12 @@ void draw_mandelbrot_arrays (float scale, float x_center, float y_center, sf::Re
 	sprite.setTexture (texture);
 	sprite.setPosition (0, 0);
 
-    window.clear();
-	window.draw (sprite);
-	window.display();
+    window->clear();
+	window->draw (sprite);
+	window->display();
 }
 
-void draw_mandelbrot_SIMD (float scale, float x_center, float y_center, sf::RenderWindow& window)
+void draw_mandelbrot_SIMD (float scale, float x_center, float y_center, sf::RenderWindow* window)
 {
     sf::Image image;
     image.create (WIDTH, HEIGHT, sf::Color::Blue);
@@ -206,9 +206,9 @@ void draw_mandelbrot_SIMD (float scale, float x_center, float y_center, sf::Rend
 	sprite.setTexture (texture);
 	sprite.setPosition (0, 0);
 
-    window.clear();
-	window.draw (sprite);
-	window.display();
+    window->clear();
+	window->draw (sprite);
+	window->display();
 
 }
 
