@@ -20,7 +20,7 @@ int main (int argc, char *argv[])
         sf::Event event;
         while (win.pollEvent (event))
         {
-            if (event.type == sf::Event::Closed)                    
+            if (event.type == sf::Event::Closed) // TODO separate            
                 win.close();
 
             if (event.type == sf::Event::KeyPressed)
@@ -44,7 +44,7 @@ int main (int argc, char *argv[])
                         break;
 
                     case sf::Keyboard::Comma:
-                        scale += DELTA_SCALE;
+                        scale += DELTA_SCALE; // TODO mult by scale (for all cases)
                         break;
 
                     case sf::Keyboard::Period:
@@ -62,7 +62,7 @@ int main (int argc, char *argv[])
 
 
         int opt_type = atoi (argv[1]);
-        previous_time = clock.getElapsedTime();
+        previous_time = clock.getElapsedTime(); // TODO separate
         switch (opt_type)
         {
         case NO_OPT:
@@ -81,7 +81,7 @@ int main (int argc, char *argv[])
             printf ("Incorrect optimization type\n");
             break;
         }
-
+        
         print_fps (&clock, &current_time, &previous_time, &win);
         win.display();
     }

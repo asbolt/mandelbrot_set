@@ -2,6 +2,9 @@
 
 void print_fps (sf::Clock* clock, sf::Time* current_time, sf::Time* previous_time, sf::RenderWindow* win)
 {
+
+    // TODO rdtsc, CLOCKS_PER_SEC
+
     *current_time = clock->getElapsedTime();
     float fps = 1.0 / (current_time->asSeconds() - previous_time->asSeconds());
     int fps_int  = (int)fps;

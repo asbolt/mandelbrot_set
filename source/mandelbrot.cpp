@@ -6,7 +6,9 @@ void draw_mandelbrot (float scale, float x_center, float y_center, sf::RenderWin
     float y0 = 0;
 
     sf::Image image;
-    image.create (WIDTH, HEIGHT, sf::Color::Blue);
+    image.create (WIDTH, HEIGHT, sf::Color::Blue); // TODO create single image class for all frames
+
+    // TODO function which launches specific render method
 
     for (int row = 0; row < HEIGHT; row++)
     {

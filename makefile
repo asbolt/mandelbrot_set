@@ -1,16 +1,19 @@
-OPT ?= -O3
-OBJ = ./build/main.o ./build/mandelbrot.o ./build/fps.o
+CC = g++
+FLAGS ?= -O3 -mavx2 -I./include
 SFML = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-FLAGS = -I./include -mavx2 -c
 
-all: $(OBJ)
-	g++ $(OPT) $(OBJ) -o sfml-app $(SFML)
+CSRC = mandelbrot.cpp fps.cpp main.cpp 
+COBJ = $(CSRC:%.cpp=./build/%.o)
 
-./build/main.o: main.cpp
-	g++ $(OPT) $(FLAGS) main.cpp -o ./build/main.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+.PHONY: all
+all: $(COBJ)
+	$(CC) $(FLAGS) $(COBJ) -o mandelbrot $(SFML)
 
-./build/mandelbrot.o: ./source/mandelbrot.cpp
-	g++ $(OPT) $(FLAGS) ./source/mandelbrot.cpp -o ./build/mandelbrot.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+./build/%.o: source/%.cpp
+	$(CC) $(FLAGS) -c $^ -o $@ $(SFML)
 
-./build/fps.o: ./source/fps.cpp
-	g++ $(OPT) $(FLAGS) ./source/fps.cpp -o ./build/fps.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+.PHONY: clean
+clean:
+	rm -r ./build/*.o
+	rm -r mandelbrot
+	
