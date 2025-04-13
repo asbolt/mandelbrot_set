@@ -5,9 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-const size_t FPS_STR_LEN = 4;
+const size_t PROC_TIKS_STR_LEN = 20;
 
-void print_fps (sf::Clock* clock, sf::Time* current_time, sf::Time* previous_time, sf::RenderWindow* win);
+void print_proc_tiks (__uint64_t* current_time, __uint64_t* previous_time, sf::RenderWindow* win);
 void window_control (float *scale, float *y_center, float *x_center, sf::Event* event, sf::RenderWindow* window);
 
 #endif

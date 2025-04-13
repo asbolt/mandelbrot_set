@@ -1,23 +1,21 @@
 #include "program_control.h"
 
-void print_fps (sf::Clock* clock, sf::Time* current_time, sf::Time* previous_time, sf::RenderWindow* win)
+void print_proc_tiks (__uint64_t* current_time, __uint64_t* previous_time, sf::RenderWindow* win)
 {
 
-    // TODO rdtsc, CLOCKS_PER_SEC
-
-    *current_time = clock->getElapsedTime();
-    float fps = 1.0 / (current_time->asSeconds() - previous_time->asSeconds());
-    int fps_int  = (int)fps;
+    *current_time = __rdtsc();
+    float proc_tiks = *current_time - *previous_time;
+    int proc_tiks_int  = (int)proc_tiks;
         
-    char fps_str[FPS_STR_LEN] = {};
-    int snprintf_res = snprintf(fps_str, FPS_STR_LEN, "%.0f", fps);
+    char proc_tiks_str[PROC_TIKS_STR_LEN] = {};
+    int snprintf_res = snprintf(proc_tiks_str, PROC_TIKS_STR_LEN, "%.0f", proc_tiks);
 
     sf::Font font;
     font.loadFromFile ("././include/font/font.ttf");
 
     sf::Text text("", font, 25);
     text.setFillColor(sf::Color::Black);
-    text.setString(fps_str);
+    text.setString(proc_tiks_str);
     win->draw(text);
 
     return;
