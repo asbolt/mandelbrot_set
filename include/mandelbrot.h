@@ -22,12 +22,13 @@ const float        MAX_DIST     =     100;
 const size_t       VEC_LEN      =       8;
 const float        X_OFFSET     =    -550;
 const float        Y_OFFSET     =    -300;
-const float        DELTA_CRD    =    0.01;
-const float        DELTA_SCALE  =  0.0001;
+const float        DELTA_CRD    =       5;
+const float        DELTA_SCALE  =   0.025;
 const float        SCALE        =   0.004;
 
-void draw_mandelbrot(float scale, float x_center, float y_center, sf::RenderWindow* window);
-void draw_mandelbrot_arrays(float scale, float x_center, float y_center, sf::RenderWindow* window);
-void draw_mandelbrot_SIMD(float scale, float x_center, float y_center, sf::RenderWindow* window);
+void draw_mandelbrot (int opt_type, float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image* image);
+void draw_mandelbrot_simple(float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image* image);
+void draw_mandelbrot_arrays(float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image);
+void draw_mandelbrot_SIMD(float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image);
 
 #endif

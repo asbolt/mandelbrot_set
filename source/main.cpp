@@ -1,11 +1,11 @@
 #include "mandelbrot.h"
-#include "fps.h"
+#include "program_control.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 int main (int argc, char *argv[])
 {
-    sf::RenderWindow win (sf::VideoMode(WIDTH, HEIGHT), "Mandelbrot");
+    sf::RenderWindow window (sf::VideoMode(WIDTH, HEIGHT), "Mandelbrot");
     
     float x_center =     0;
     float y_center =     0;
@@ -15,75 +15,30 @@ int main (int argc, char *argv[])
     sf::Time previous_time = clock.getElapsedTime();
     sf::Time current_time;
 
-    while (win.isOpen())
+    while (window.isOpen())
     {
         sf::Event event;
-        while (win.pollEvent (event))
-        {
-            if (event.type == sf::Event::Closed) // TODO separate            
-                win.close();
-
-            if (event.type == sf::Event::KeyPressed)
-            {
-                switch (event.key.code)
-                {
-                    case sf::Keyboard::Right:
-                        x_center += DELTA_CRD;
-                        break;
-
-                    case sf::Keyboard::Left:
-                        x_center -= DELTA_CRD;
-                        break;
-
-                    case sf::Keyboard::Down:
-                        y_center += DELTA_CRD;
-                        break;
-
-                    case sf::Keyboard::Up:
-                        y_center -= DELTA_CRD;
-                        break;
-
-                    case sf::Keyboard::Comma:
-                        scale += DELTA_SCALE; // TODO mult by scale (for all cases)
-                        break;
-
-                    case sf::Keyboard::Period:
-                        scale -= DELTA_SCALE;
-                        break;
-
-                    case sf::Keyboard::Enter:
-                        win.close();
-                
-                    default:
-                        break;
-                }
-            }
-        }
-
+        window_control (&scale, &y_center, &x_center, &event, &window);
 
         int opt_type = atoi (argv[1]);
-        previous_time = clock.getElapsedTime(); // TODO separate
-        switch (opt_type)
-        {
-        case NO_OPT:
-            draw_mandelbrot (scale, x_center, y_center, &win);
-            break;
+        previous_time = clock.getElapsedTime();
+        sf::Image image;
+        image.create (WIDTH, HEIGHT);
+        draw_mandelbrot (opt_type, scale, x_center, y_center, &window, &image);
 
-        case ARRAYS:
-            draw_mandelbrot_arrays (scale, x_center, y_center, &win);
-            break;
+        sf::Texture texture;
+	    texture.loadFromImage (image);
+ 
+	    sf::Sprite sprite;
+	    sprite.setTexture (texture);
+	    sprite.setPosition (0, 0);
 
-        case SIMD:
-            draw_mandelbrot_SIMD (scale, x_center, y_center, &win);
-            break;
+        window.clear();
+	    window.draw (sprite);
+	    window.display();
         
-        default:
-            printf ("Incorrect optimization type\n");
-            break;
-        }
-        
-        print_fps (&clock, &current_time, &previous_time, &win);
-        win.display();
+        print_fps (&clock, &current_time, &previous_time, &window);
+        window.display();
     }
 
 }

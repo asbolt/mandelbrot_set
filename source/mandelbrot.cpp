@@ -1,14 +1,31 @@
 #include "mandelbrot.h"
 
-void draw_mandelbrot (float scale, float x_center, float y_center, sf::RenderWindow* window)
+void draw_mandelbrot (int opt_type, float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image* image)
+{
+    switch (opt_type)
+        {
+        case NO_OPT:
+            draw_mandelbrot_simple (scale, x_center, y_center, window, image);
+            break;
+
+        case ARRAYS:
+            draw_mandelbrot_arrays (scale, x_center, y_center, window, image);
+            break;
+
+        case SIMD:
+            draw_mandelbrot_SIMD (scale, x_center, y_center, window, image);
+            break;
+        
+        default:
+            printf ("Incorrect optimization type\n");
+            break;
+        }
+}
+
+void draw_mandelbrot_simple (float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image)
 {
     float x0 = 0;
     float y0 = 0;
-
-    sf::Image image;
-    image.create (WIDTH, HEIGHT, sf::Color::Blue); // TODO create single image class for all frames
-
-    // TODO function which launches specific render method
 
     for (int row = 0; row < HEIGHT; row++)
     {
@@ -34,30 +51,17 @@ void draw_mandelbrot (float scale, float x_center, float y_center, sf::RenderWin
             }
             
             if (step == MAX_STEP)
-                image.setPixel (col, row, sf::Color(80, 0, 0, 255));
+                image->setPixel (col, row, sf::Color(80, 0, 0, 255));
             else
-                image.setPixel (col, row, sf::Color(200, 0, (step%5 + 1) * 50, 255));
+                image->setPixel (col, row, sf::Color(200, 0, (step%5 + 1) * 50, 255));
         }
     }
-    sf::Texture texture;
-	texture.loadFromImage (image);
- 
-	sf::Sprite sprite;
-	sprite.setTexture (texture);
-	sprite.setPosition (0, 0);
-
-    window->clear();
-	window->draw (sprite);
-	window->display();
 }
 
-void draw_mandelbrot_arrays (float scale, float x_center, float y_center, sf::RenderWindow* window)
+void draw_mandelbrot_arrays (float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image)
 {
     float x0 = 0;
     float y0 = 0;
-
-    sf::Image image;
-    image.create(WIDTH, HEIGHT, sf::Color::Blue);
 
     for (int row = 0; row < HEIGHT; row++)
     {
@@ -121,29 +125,16 @@ void draw_mandelbrot_arrays (float scale, float x_center, float y_center, sf::Re
             for (int element = 0; element < VEC_LEN; element++)
             {
                 if (step[element] == MAX_STEP)
-                    image.setPixel (col + element, row, sf::Color(80, 0, 0, 255));
+                    image->setPixel (col + element, row, sf::Color(80, 0, 0, 255));
                 else
-                    image.setPixel (col + element, row, sf::Color(200, 0, (step[element]%5 + 1) * 50, 255));
+                    image->setPixel (col + element, row, sf::Color(200, 0, (step[element]%5 + 1) * 50, 255));
             }
         }
     }
-    sf::Texture texture;
-	texture.loadFromImage (image);
- 
-	sf::Sprite sprite;
-	sprite.setTexture (texture);
-	sprite.setPosition (0, 0);
-
-    window->clear();
-	window->draw (sprite);
-	window->display();
 }
 
-void draw_mandelbrot_SIMD (float scale, float x_center, float y_center, sf::RenderWindow* window)
+void draw_mandelbrot_SIMD (float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image)
 {
-    sf::Image image;
-    image.create (WIDTH, HEIGHT, sf::Color::Blue);
-
     __m256 max_dist  = _mm256_set1_ps (MAX_DIST);
     __m256 delta_vec = _mm256_set1_ps (scale);
     __m256 x_offset  = _mm256_set1_ps (X_OFFSET*scale + x_center);
@@ -194,23 +185,11 @@ void draw_mandelbrot_SIMD (float scale, float x_center, float y_center, sf::Rend
             for (int element = 0; element < VEC_LEN; element++)
             {
                 if (size_t_step[element] == MAX_STEP)
-                    image.setPixel (col + element, row, sf::Color(80, 0, 0, 255));
+                    image->setPixel (col + element, row, sf::Color(80, 0, 0, 255));
                 else
-                    image.setPixel (col + element, row, sf::Color(200, 0, (size_t_step[element]%5 + 1) * 50, 255));
+                    image->setPixel (col + element, row, sf::Color(200, 0, (size_t_step[element]%5 + 1) * 50, 255));
             }
         }
     }
-
-    sf::Texture texture;
-	texture.loadFromImage (image);
- 
-	sf::Sprite sprite;
-	sprite.setTexture (texture);
-	sprite.setPosition (0, 0);
-
-    window->clear();
-	window->draw (sprite);
-	window->display();
-
 }
 

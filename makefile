@@ -2,7 +2,7 @@ CC = g++
 FLAGS ?= -O3 -mavx2 -I./include
 SFML = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
-CSRC = mandelbrot.cpp fps.cpp main.cpp 
+CSRC = mandelbrot.cpp program_control.cpp main.cpp 
 COBJ = $(CSRC:%.cpp=./build/%.o)
 
 .PHONY: all
