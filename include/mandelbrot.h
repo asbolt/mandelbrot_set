@@ -29,6 +29,6 @@ const float        SCALE        =   0.004;
 void draw_mandelbrot (int opt_type, float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image* image);
 void draw_mandelbrot_simple(float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image* image);
 void draw_mandelbrot_arrays(float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image);
-void draw_mandelbrot_SIMD(float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image);
+void draw_mandelbrot_intrinsics(float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image);
 
 #endif

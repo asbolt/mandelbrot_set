@@ -13,7 +13,7 @@ void draw_mandelbrot (int opt_type, float scale, float x_center, float y_center,
             break;
 
         case SIMD:
-            draw_mandelbrot_SIMD (scale, x_center, y_center, window, image);
+            draw_mandelbrot_intrinsics (scale, x_center, y_center, window, image);
             break;
         
         default:
@@ -133,7 +133,7 @@ void draw_mandelbrot_arrays (float scale, float x_center, float y_center, sf::Re
     }
 }
 
-void draw_mandelbrot_SIMD (float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image)
+void draw_mandelbrot_intrinsics (float scale, float x_center, float y_center, sf::RenderWindow* window, sf::Image *image)
 {
     __m256 max_dist  = _mm256_set1_ps (MAX_DIST);
     __m256 delta_vec = _mm256_set1_ps (scale);
