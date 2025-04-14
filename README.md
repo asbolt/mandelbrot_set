@@ -30,7 +30,7 @@ mkdir build
 make
 ./mandelbrot optimization_type
 ```
-
+|-|-|
 |1| без оптимизаций|
 |2| использование массивов|
 |3| использование intrinsic-ов|
